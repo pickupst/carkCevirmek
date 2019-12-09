@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,24 +8,31 @@ import Constants from './Constants';
 import ReelSet from './components/ReelSet';
 
 
-const App = () => {
-  return (
-    <View style={styles.container}>
-      
-      <View style = {styles.playContainer}>
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.ReelSet = null;
+  }
 
-          <ReelSet />
-
-      </View>
-
-      <View style = {styles.buttonContainer}>
-
-          <Button title = "Çevir" onPress = {() => {}}> </Button>
-
-      </View>
-
-    </ View>
-  );
+  render() {
+    return (
+      <View style={styles.container}>
+        
+        <View style = {styles.playContainer}>
+  
+            <ReelSet ref = {(ref) => { this.ReelSet = ref; }} />
+  
+        </View>
+  
+        <View style = {styles.buttonContainer}>
+  
+            <Button title = "Çevir" onPress = {() => {this.ReelSet.spin() }}> </Button>
+  
+        </View>
+  
+      </ View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -51,5 +58,3 @@ const styles = StyleSheet.create({
   }
 
 });
-
-export default App;
