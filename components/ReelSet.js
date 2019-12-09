@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     reelSet: {
       flex: 1,
       flexDirection: 'row',
-      backgroundColor: 'orange'
     },
   
   });

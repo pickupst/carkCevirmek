@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
-  Button
+  Button,
+  SafeAreaView
 } from 'react-native';
 import Constants from './Constants';
 import ReelSet from './components/ReelSet';
@@ -18,11 +19,9 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         
-        <View style = {styles.playContainer}>
-  
+        <SafeAreaView style = {styles.playContainer}>
             <ReelSet ref = {(ref) => { this.ReelSet = ref; }} />
-  
-        </View>
+        </SafeAreaView>
   
         <View style = {styles.buttonContainer}>
   
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
 
     height: 60,
     width: Constants.MAX_WIDTH,
-    backgroundColor: 'purple'
+    backgroundColor: 'black'
 
   },
 
@@ -53,8 +52,8 @@ const styles = StyleSheet.create({
 
     height: Constants.MAX_HEIGHT - 60,
     width: Constants.MAX_WIDTH,
-    backgroundColor: 'blue'
-    
+    backgroundColor: 'black'
+
   }
 
 });
