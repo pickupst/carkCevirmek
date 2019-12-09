@@ -14,6 +14,9 @@ export default class ReelSet extends Component {
         }
 
         this.reels = [];
+        this.reelsInMotion = null;
+        this.spinResults = [];
+
     }
 
 
@@ -23,13 +26,28 @@ export default class ReelSet extends Component {
 
     }
 
+    evaluateResults = () => {
+        
+    }
+
     spin = () => {
+        this.reelsInMotion = Constants.REELS;
+
         for (let index = 0; index < Constants.REELS; index++) {
             this.reels[index].scrollByOffSet(this.randomBetween (
                 (Constants.REELS_REPEAT - 6) * this.reels[index].symbols.length,
                 (Constants.REELS_REPEAT - 5) * this.reels[index].symbols.length,
 
-            ));
+            ), (reelIdx, result) => {
+
+                this.reelsInMotion -= 1;
+                this.spinResults[reelIdx] = results;
+
+                if (this.reelsInMotion === 0) {
+                    this.evaluateResults();
+                }
+
+            });
         }
     }
 

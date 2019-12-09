@@ -7,7 +7,7 @@ export default class Reel extends Component {
 
     constructor (props) {
         super(props);
-        this.symbols = "BBCDGLGLCCCLLDDMS777XDBL";
+        this.symbols = Constants.REEL_SYMBOLS[this.props.index];
         this.reelSymbols = this.symbols.repeat(Constants.REELS_REPEAT).split("")
         this.symbolHeight = this.props.height / Constants.SYMBOLS;
 
@@ -22,7 +22,7 @@ export default class Reel extends Component {
         }
     }
 
-    scrollByOffSet = (offset) => {
+    scrollByOffSet = (offset, callback) => {
         for (let index = 0; index < Constants.SYMBOLS; index++) {
             this.symbolRefs[this.position + index].setActive(true);
         }
@@ -43,13 +43,17 @@ export default class Reel extends Component {
 
             this.position = ((Constants.REELS_REPEAT - 2) * this.symbols.length) + (this.position % this.symbols.length);
 
+            let results = [];
+
             for (let index = 0; index < Constants.SYMBOLS; index++) {
                 this.symbolRefs[this.position + index].setActive(false);
+                results.push(this.reelSymbols[this.position + index])
             }
 
             this.currentScrollPos = this.position * this.symbolHeight * -1;
             this.state.scrollPos.setValue(this.currentScrollPos);
 
+            callback(this.props.index, results);
         });
 
     } 
