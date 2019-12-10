@@ -16,6 +16,7 @@ export default class ReelSet extends Component {
         this.reels = [];
         this.reelsInMotion = null;
         this.spinResults = [];
+        this.winningLines = [];
 
     }
 
@@ -26,8 +27,72 @@ export default class ReelSet extends Component {
 
     }
 
+    highLightWinningLines = (currentIndex) => {
+
+        if (!this.winningLines.length) {
+            return;
+        }
+
+        if (currentIndex > 0) {
+            //turn off the light on the previous line
+            Constants.LINES[this.winningLines[currentIndex - 1]].map((el) => {
+
+                this.reels[el[0]].hightLightAtIndex(el[1], false);
+    
+            });
+        }
+
+        if (currentIndex > this.winningLines.length - 1) {
+            return;
+        }
+
+        Constants.LINES[this.winningLines[currentIndex]].map((el) => {
+
+            this.reels[el[0]].hightLightAtIndex(el[1], true);
+            this.reels[el[0]].shakeAtIndex(el[1]);
+
+        });
+
+        setTimeout(() => {
+
+            this.highLightWinningLines(currentIndex + 1);
+
+        }, 800);
+    }
+
     evaluateResults = () => {
-        
+        this.winningLines = [];
+
+        for (let lineIdx = 0; lineIdx < Constants.LINES.length; lineIdx++) {
+            let streak = 0;
+            let currentKind = null;
+
+            for (let coordIdx = 0; coordIdx < Constants.LINES[lineIdx].length; coordIdx++) {
+                let coords = Constants.LINES[lineIdx][coordIdx];
+                let symbolAtCoords = this.spinResults[coords[0]][coords[1]];
+
+                if (coordIdx === 0) {
+                    if (symbolAtCoords === "D") {
+                        break;
+                    }
+
+                    currentKind = symbolAtCoords;
+                    streak = 1;
+                } else  {
+                    if (symbolAtCoords !== currentKind) {
+                        break;
+                    }
+                    streak += 1;
+                }
+                
+            }
+
+            if (streak >= 2) {
+                this.winningLines.push(lineIdx);
+            }
+            
+        }
+        this.highLightWinningLines(0);
     }
 
     spin = () => {

@@ -20,6 +20,19 @@ export default class Reel extends Component {
         this.state = {
             scrollPos: new Animated.Value(this.currentScrollPos)
         }
+        
+    }
+
+    hightLightAtIndex = (index, hightLight) => {
+
+        this.symbolRefs[this.position + index].setActive(hightLight);
+
+    }
+
+    shakeAtIndex = (index, hightLight) => {
+
+        this.symbolRefs[this.position + index].shake();
+
     }
 
     scrollByOffSet = (offset, callback) => {

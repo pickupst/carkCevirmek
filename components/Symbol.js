@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, Animated } from 'react-native';
 import Constants from '../Constants';
 import Images from '../assets/images'
 
@@ -10,6 +10,7 @@ export default class Symbol extends Component {
 
         this.state = {
             active: true,
+            animatedValue: new Animated.Value(0)
         };
     }
 
@@ -61,12 +62,42 @@ export default class Symbol extends Component {
         });
     }
 
+    shake = () => {
+
+        this.state.animatedValue.setValue(0);
+        Animated.timing(
+            this.state.animatedValue,
+            {
+                toValue: 1,
+                duration: 750,
+                useNativeDriver: true
+            }
+        ).start();
+
+    }
+
     render() {
         let symbolSource = this.getImage();
+        
+        let symbolAnimation = [
+            {
+                scale: this.state.animatedValue.interpolate({
+                    inputRange: [0, 0.25, 0.5, 1],
+                    outputRange: [1, 1.25, 0.75, 1]
+                })
+            },
+            {
+                rotate: this.state.animatedValue.interpolate({
+                    inputRange: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+                    outputRange: ["0deg", "15deg", "0deg", "-15deg", "0deg", "15deg", "0deg", "-15deg", "0deg", "15deg", "0deg"]
+                })
+            },
+        ];
+
         return (
             <View style={[styles.symbol, { width: this.props.width, height: this.props.height }]} >
 
-                <Image style = {{ width: this.props.width - 40, height: this.props.height - 20, opacity: this.state.active ? 1 : 0.3 }} resizeMode = "contain" source = {symbolSource} />
+                <Animated.Image style = {{ width: this.props.width - 40, height: this.props.height - 20, opacity: this.state.active ? 1 : 0.3, transform: symbolAnimation }} resizeMode = "contain" source = {symbolSource} />
 
             </View>
         )
