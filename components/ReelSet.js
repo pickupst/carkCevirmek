@@ -38,7 +38,7 @@ export default class ReelSet extends Component {
                 (Constants.REELS_REPEAT - 6) * this.reels[index].symbols.length,
                 (Constants.REELS_REPEAT - 5) * this.reels[index].symbols.length,
 
-            ), (reelIdx, result) => {
+            ), (reelIdx, results) => {
 
                 this.reelsInMotion -= 1;
                 this.spinResults[reelIdx] = results;
